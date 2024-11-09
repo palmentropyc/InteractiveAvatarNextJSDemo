@@ -37,6 +37,8 @@ export default function InteractiveAvatar() {
   const avatar = useRef<StreamingAvatar | null>(null);
   const [chatMode, setChatMode] = useState("text_mode");
   const [isUserTalking, setIsUserTalking] = useState(false);
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const localVideoRef = useRef<HTMLVideoElement>(null);
 
   async function fetchAccessToken() {
     try {
@@ -55,8 +57,21 @@ export default function InteractiveAvatar() {
     return "";
   }
 
+  async function initializeCamera() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: true,
+        audio: false // No necesitamos audio aquí ya que el micrófono lo maneja Heygen
+      });
+      setLocalStream(stream);
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+    }
+  }
+
   async function startSession() {
     setIsLoadingSession(true);
+    await initializeCamera();
     const newToken = await fetchAccessToken();
 
     avatar.current = new StreamingAvatar({
@@ -144,6 +159,10 @@ export default function InteractiveAvatar() {
   async function endSession() {
     await avatar.current?.stopAvatar();
     setStream(undefined);
+    if (localStream) {
+      localStream.getTracks().forEach(track => track.stop());
+      setLocalStream(null);
+    }
   }
 
   const handleChangeChatMode = useMemoizedFn(async (v) => {
@@ -183,8 +202,32 @@ export default function InteractiveAvatar() {
     }
   }, [mediaStream, stream]);
 
+  useEffect(() => {
+    if (localStream && localVideoRef.current) {
+      localVideoRef.current.srcObject = localStream;
+    }
+  }, [localStream]);
+
   return (
-    <div className="w-[900px] mx-auto">
+    <div className="w-[900px] mx-auto relative">
+      {/* Vista previa de la cámara como elemento flotante independiente */}
+      {localStream && (
+        <div className="fixed top-4 right-4 w-48 h-36 rounded-xl overflow-hidden shadow-lg border-2 border-white z-[100]">
+          <video
+            ref={localVideoRef}
+            autoPlay
+            playsInline
+            muted
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              transform: 'scaleX(-1)', // Esto voltea horizontalmente el video para que sea como un espejo
+            }}
+          />
+        </div>
+      )}
+
       <div className="text-center mb-8">
         <div className="relative flex flex-col items-center">
           <div className="mb-6 relative">
@@ -238,7 +281,9 @@ export default function InteractiveAvatar() {
               >
                 <track kind="captions" />
               </video>
-              <div className="flex flex-col gap-3 absolute bottom-4 right-4">
+
+              {/* Botones */}
+              <div className="flex flex-col gap-3 absolute bottom-4 right-4 z-[60]">
                 <Button
                   className="bg-gradient-to-r from-red-500 to-rose-400 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-8"
                   size="md"
