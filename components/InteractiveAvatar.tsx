@@ -71,7 +71,6 @@ export default function InteractiveAvatar() {
 
   async function startSession() {
     setIsLoadingSession(true);
-    await initializeCamera();
     const newToken = await fetchAccessToken();
 
     avatar.current = new StreamingAvatar({
@@ -124,6 +123,8 @@ export default function InteractiveAvatar() {
       setData(res);
       await avatar.current?.startVoiceChat();
       setChatMode("voice_mode");
+      
+      await initializeCamera();
     } catch (error) {
       console.error("Error starting avatar session:", error);
       setDebug(error instanceof Error ? error.message : "Unknown error");
@@ -209,7 +210,7 @@ export default function InteractiveAvatar() {
   }, [localStream]);
 
   return (
-    <div className="w-[900px] mx-auto relative">
+    <div className="w-full max-w-[1200px] mx-auto relative">
       {/* Vista previa de la cámara como elemento flotante independiente */}
       {localStream && (
         <div className="fixed top-4 right-4 w-48 h-36 rounded-xl overflow-hidden shadow-lg border-2 border-white z-[100]">
@@ -267,20 +268,29 @@ export default function InteractiveAvatar() {
       
       {stream && (
         <Card className="border border-gray-100 shadow-lg rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm">
-          <CardBody className="h-[500px] flex flex-col justify-center items-center">
-            <div className="h-[500px] w-full justify-center items-center flex rounded-xl overflow-hidden bg-white relative">
+          <CardBody className="h-[600px] flex flex-col justify-center items-center">
+            <div className="h-[600px] w-full justify-center items-center flex rounded-xl overflow-hidden bg-white relative">
               <video
                 ref={mediaStream}
                 autoPlay
                 playsInline
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
-                }}
+                className="w-full h-full object-contain"
               >
                 <track kind="captions" />
               </video>
+
+              {/* Vista previa de la cámara superpuesta */}
+              {localStream && (
+                <div className="absolute top-4 right-4 w-64 h-48 rounded-xl overflow-hidden shadow-lg border-2 border-white">
+                  <video
+                    ref={localVideoRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    className="w-full h-full object-cover transform scale-x-[-1]"
+                  />
+                </div>
+              )}
 
               {/* Botones */}
               <div className="flex flex-col gap-3 absolute bottom-4 right-4 z-[60]">
