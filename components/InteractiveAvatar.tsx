@@ -20,7 +20,7 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import { useMemoizedFn, usePrevious } from "ahooks";
-import { GraduationCap, CircleDot } from "lucide-react";
+import { GraduationCap, CircleDot, Mic, X, LogOut } from "lucide-react";
 
 import InteractiveAvatarTextInput from "./InteractiveAvatarTextInput";
 
@@ -238,18 +238,20 @@ export default function InteractiveAvatar() {
               >
                 <track kind="captions" />
               </video>
-              <div className="flex flex-col gap-2 absolute bottom-4 right-4">
+              <div className="flex flex-col gap-3 absolute bottom-4 right-4">
                 <Button
-                  className="bg-red-500 hover:bg-red-600 text-white shadow-md transition-all duration-200 rounded-xl px-6"
+                  className="bg-gradient-to-r from-red-500 to-rose-400 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-8"
                   size="md"
                   onClick={handleInterrupt}
+                  startContent={<X className="w-4 h-4" />}
                 >
                   Stop Response
                 </Button>
                 <Button
-                  className="bg-gray-800 hover:bg-gray-900 text-white shadow-md transition-all duration-200 rounded-xl px-6"
+                  className="bg-gradient-to-r from-slate-700 to-slate-600 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-8"
                   size="md"
                   onClick={endSession}
+                  startContent={<LogOut className="w-4 h-4" />}
                 >
                   End Session
                 </Button>
@@ -258,22 +260,6 @@ export default function InteractiveAvatar() {
           </CardBody>
           <Divider className="bg-gray-100" />
           <CardFooter className="flex flex-col gap-4 relative bg-white/80 backdrop-blur-sm p-6">
-            <Tabs 
-              aria-label="Chat Options"
-              selectedKey={chatMode}
-              onSelectionChange={(v) => handleChangeChatMode(v)}
-              className="w-full"
-              classNames={{
-                tabList: "gap-4 w-full relative rounded-xl p-1 border border-gray-200 bg-white",
-                cursor: "bg-blue-50 shadow-sm",
-                tab: "max-w-fit px-6 h-12 text-sm font-medium",
-                tabContent: "group-data-[selected=true]:text-blue-600"
-              }}
-            >
-              <Tab key="text_mode" title="Type your question" />
-              <Tab key="voice_mode" title="Ask verbally" />
-            </Tabs>
-            
             {chatMode === "text_mode" ? (
               <div className="w-full flex relative">
                 <InteractiveAvatarTextInput
@@ -290,15 +276,24 @@ export default function InteractiveAvatar() {
                 )}
               </div>
             ) : (
-              <div className="w-full text-center">
-                <Button
-                  isDisabled={!isUserTalking}
-                  className="bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
-                  size="md"
-                  variant="shadow"
+              <div className="w-full flex justify-center">
+                <div
+                  className={`
+                    px-8 py-4 rounded-full transition-all duration-200 flex items-center gap-3
+                    ${isUserTalking 
+                      ? 'bg-gradient-to-r from-green-500/10 to-emerald-400/10 text-green-600'
+                      : 'bg-gradient-to-r from-blue-600/10 to-indigo-500/10 text-blue-600'
+                    }
+                  `}
                 >
-                  {isUserTalking ? "Listening" : "Voice chat"}
-                </Button>
+                  {isUserTalking 
+                    ? <CircleDot className="w-5 h-5 animate-pulse" />
+                    : <Mic className="w-5 h-5" />
+                  }
+                  <span className="font-medium">
+                    {isUserTalking ? "Listening to your voice..." : "Waiting for your voice..."}
+                  </span>
+                </div>
               </div>
             )}
           </CardFooter>
