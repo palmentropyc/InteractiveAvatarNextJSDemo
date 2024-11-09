@@ -183,32 +183,36 @@ export default function InteractiveAvatar() {
 
   return (
     <div className="w-[900px] mx-auto">
-      <div className="text-center mb-8 relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full blur-xl opacity-70" />
-        
+      <div className="text-center mb-8">
         <div className="relative flex flex-col items-center">
-          <div className="mb-4 relative">
-            <CircleDot className="w-12 h-12 text-blue-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20" />
-            <GraduationCap className="w-12 h-12 text-blue-600 relative" />
+          <div className="mb-6 relative">
+            <div className="relative inline-block">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-xl" />
+              <div className="relative bg-white p-4 rounded-full shadow-md border border-gray-100">
+                <GraduationCap className="w-12 h-12 text-blue-600" />
+              </div>
+            </div>
           </div>
           
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Welcome to Hawkings Tutor
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mb-8">
-            Your AI-powered accounting tutor, ready to help you ace your exams with personalized guidance and practice
-          </p>
+          <div className="space-y-4">
+            <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+              Welcome to Hawkings Tutor
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Your AI-powered accounting tutor, ready to help you ace your exams with personalized guidance and practice
+            </p>
+          </div>
 
           {!stream && !isLoadingSession ? (
             <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all duration-200 rounded-xl text-lg font-medium px-8 py-6"
+              className="mt-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-xl text-lg font-medium px-8 py-6"
               size="lg"
               onClick={startSession}
             >
               Start Learning Session
             </Button>
           ) : isLoadingSession ? (
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-4 mt-8">
               <Spinner color="primary" size="lg" />
               <p className="text-gray-600">Preparing your tutor...</p>
             </div>
