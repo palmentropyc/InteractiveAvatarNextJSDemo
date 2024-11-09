@@ -224,7 +224,7 @@ export default function InteractiveAvatar() {
               Welcome to Hawkings Tutor
             </h1>
             <p className="text-base text-gray-600 max-w-2xl">
-              Your AI-powered accounting tutor, ready to help you ace your exams
+              Your AI-powered tutor, ready to help you ace your exams
             </p>
           </div>
         </div>
