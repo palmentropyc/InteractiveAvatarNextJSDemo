@@ -211,41 +211,40 @@ export default function InteractiveAvatar() {
 
   return (
     <div className="w-full max-w-[1200px] mx-auto">
-      <div className="text-center mb-12 px-4">
-        <div className="relative flex flex-col items-center">
-          <div className="mb-8 pt-4">
-            <div className="relative inline-block">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-xl" />
-              <div className="relative bg-white p-4 rounded-full shadow-md border border-gray-100">
-                <GraduationCap className="w-12 h-12 text-blue-600" />
-              </div>
+      <div className="text-center mb-8 px-4">
+        <div className="flex items-center justify-center gap-6 mb-10">
+          <div className="relative flex-shrink-0">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-xl" />
+            <div className="relative bg-white p-3 rounded-full shadow-md border border-gray-100">
+              <GraduationCap className="w-10 h-10 text-blue-600" />
             </div>
           </div>
-          
-          <div className="space-y-4">
-            <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+          <div className="space-y-2 text-left">
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
               Welcome to Hawkings Tutor
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Your AI-powered accounting tutor, ready to help you ace your exams with personalized guidance and practice
+            <p className="text-base text-gray-600 max-w-2xl">
+              Your AI-powered accounting tutor, ready to help you ace your exams
             </p>
           </div>
+        </div>
 
-          {!stream && !isLoadingSession ? (
+        {!stream && !isLoadingSession ? (
+          <div className="mt-12">
             <Button
-              className="mt-8 bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-xl text-lg font-medium px-8 py-6"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-xl text-lg font-medium px-8 py-4"
               size="lg"
               onClick={startSession}
             >
               Start Learning Session
             </Button>
-          ) : isLoadingSession ? (
-            <div className="flex flex-col items-center gap-4 mt-8">
-              <Spinner color="primary" size="lg" />
-              <p className="text-gray-600">Preparing your tutor...</p>
-            </div>
-          ) : null}
-        </div>
+          </div>
+        ) : isLoadingSession ? (
+          <div className="flex flex-col items-center gap-3 mt-12">
+            <Spinner color="primary" size="lg" />
+            <p className="text-gray-600">Preparing your tutor...</p>
+          </div>
+        ) : null}
       </div>
       
       {stream && (

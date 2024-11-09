@@ -28,11 +28,9 @@ export default function RootLayout({
       className={`${fontSans.variable} font-sans`}
     >
       <head />
-      <body className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+      <body className="h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <main className="container mx-auto px-4 py-8">
-            {children}
-          </main>
+          {children}
         </Providers>
       </body>
     </html>
