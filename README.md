@@ -55,7 +55,7 @@ To add your Open AI API Key, fill copy it to the `OPENAI_API_KEY` and `NEXT_PUBL
 
 In this demo, we are calling the Chat Completions API from OpenAI in order to come up with some response to user input. You can see the relevant code in components/InteractiveAvatar.tsx.
 
-In the initialMessages parameter, you can replace the content of the 'system' message with whatever 'knowledge base' or context that you would like the GPT-4o model to reply to the user's input with.
+In the initialMessages parameter, you can replace the content of the 'system' message with whatever 'knowledge base' or context that you would like the gpt-4oo model to reply to the user's input with.
 
 You can explore this API and the different parameters and models available here: [https://platform.openai.com/docs/guides/text-generation/chat-completions-api]
 
