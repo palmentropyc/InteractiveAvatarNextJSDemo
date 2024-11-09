@@ -211,24 +211,6 @@ export default function InteractiveAvatar() {
 
   return (
     <div className="w-full max-w-[1200px] mx-auto relative">
-      {/* Vista previa de la cámara como elemento flotante independiente */}
-      {localStream && (
-        <div className="fixed top-4 right-4 w-48 h-36 rounded-xl overflow-hidden shadow-lg border-2 border-white z-[100]">
-          <video
-            ref={localVideoRef}
-            autoPlay
-            playsInline
-            muted
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              transform: 'scaleX(-1)', // Esto voltea horizontalmente el video para que sea como un espejo
-            }}
-          />
-        </div>
-      )}
-
       <div className="text-center mb-8">
         <div className="relative flex flex-col items-center">
           <div className="mb-6 relative">
@@ -268,48 +250,50 @@ export default function InteractiveAvatar() {
       
       {stream && (
         <Card className="border border-gray-100 shadow-lg rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm">
-          <CardBody className="h-[600px] flex flex-col justify-center items-center">
-            <div className="h-[600px] w-full justify-center items-center flex rounded-xl overflow-hidden bg-white relative">
-              <video
-                ref={mediaStream}
-                autoPlay
-                playsInline
-                className="w-full h-full object-contain"
-              >
-                <track kind="captions" />
-              </video>
+          <CardBody className="h-[600px] p-0">
+            <div className="relative w-full h-full flex items-center justify-center bg-white">
+              <div className="relative w-full aspect-video max-h-full">
+                <video
+                  ref={mediaStream}
+                  autoPlay
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-contain bg-white"
+                >
+                  <track kind="captions" />
+                </video>
 
-              {/* Vista previa de la cámara superpuesta */}
-              {localStream && (
-                <div className="absolute top-4 right-4 w-64 h-48 rounded-xl overflow-hidden shadow-lg border-2 border-white">
-                  <video
-                    ref={localVideoRef}
-                    autoPlay
-                    playsInline
-                    muted
-                    className="w-full h-full object-cover transform scale-x-[-1]"
-                  />
+                <div className="absolute inset-0">
+                  {localStream && (
+                    <div className="absolute top-[5%] right-[5%] w-[20%] aspect-video rounded-xl overflow-hidden shadow-lg border-2 border-white">
+                      <video
+                        ref={localVideoRef}
+                        autoPlay
+                        playsInline
+                        muted
+                        className="w-full h-full object-cover transform scale-x-[-1]"
+                      />
+                    </div>
+                  )}
+
+                  <div className="absolute bottom-[5%] right-[5%] flex flex-col gap-3">
+                    <Button
+                      className="bg-gradient-to-r from-red-500 to-rose-400 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-8"
+                      size="md"
+                      onClick={handleInterrupt}
+                      startContent={<X className="w-4 h-4" />}
+                    >
+                      Stop Response
+                    </Button>
+                    <Button
+                      className="bg-gradient-to-r from-slate-700 to-slate-600 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-8"
+                      size="md"
+                      onClick={endSession}
+                      startContent={<LogOut className="w-4 h-4" />}
+                    >
+                      End Session
+                    </Button>
+                  </div>
                 </div>
-              )}
-
-              {/* Botones */}
-              <div className="flex flex-col gap-3 absolute bottom-4 right-4 z-[60]">
-                <Button
-                  className="bg-gradient-to-r from-red-500 to-rose-400 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-8"
-                  size="md"
-                  onClick={handleInterrupt}
-                  startContent={<X className="w-4 h-4" />}
-                >
-                  Stop Response
-                </Button>
-                <Button
-                  className="bg-gradient-to-r from-slate-700 to-slate-600 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-8"
-                  size="md"
-                  onClick={endSession}
-                  startContent={<LogOut className="w-4 h-4" />}
-                >
-                  End Session
-                </Button>
               </div>
             </div>
           </CardBody>
