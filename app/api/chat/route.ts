@@ -7,7 +7,7 @@ export const maxDuration = 30;
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
-  const model = openai("gpt-4") as unknown as LanguageModelV1;
+  const model = openai("gpt-4o") as unknown as LanguageModelV1;
 
   const result = await streamText({
     model,
