@@ -4,7 +4,7 @@ import InteractiveAvatar from "@/components/InteractiveAvatar";
 
 export default function App() {
   return (
-    <div className="h-screen w-screen flex items-center justify-center overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
       <InteractiveAvatar />
     </div>
   );

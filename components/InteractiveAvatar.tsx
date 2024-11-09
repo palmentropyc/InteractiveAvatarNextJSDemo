@@ -210,10 +210,10 @@ export default function InteractiveAvatar() {
   }, [localStream]);
 
   return (
-    <div className="w-full max-w-[1200px] mx-auto relative">
-      <div className="text-center mb-8">
+    <div className="w-full max-w-[1200px] mx-auto">
+      <div className="text-center mb-12 px-4">
         <div className="relative flex flex-col items-center">
-          <div className="mb-6 relative">
+          <div className="mb-8 pt-4">
             <div className="relative inline-block">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-xl" />
               <div className="relative bg-white p-4 rounded-full shadow-md border border-gray-100">
@@ -250,21 +250,23 @@ export default function InteractiveAvatar() {
       
       {stream && (
         <Card className="border border-gray-100 shadow-lg rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm">
-          <CardBody className="h-[600px] p-0">
-            <div className="relative w-full h-full flex items-center justify-center bg-white">
-              <div className="relative w-full aspect-video max-h-full">
+          <CardBody className="p-0">
+            <div className="relative w-full bg-white">
+              <div className="relative w-full aspect-video">
+                <div className="absolute inset-0 bg-white" />
+                
                 <video
                   ref={mediaStream}
                   autoPlay
                   playsInline
-                  className="absolute inset-0 w-full h-full object-contain bg-white"
+                  className="absolute inset-0 w-full h-full object-contain"
                 >
                   <track kind="captions" />
                 </video>
 
-                <div className="absolute inset-0">
+                <div className="absolute inset-0 p-4">
                   {localStream && (
-                    <div className="absolute top-[5%] right-[5%] w-[20%] aspect-video rounded-xl overflow-hidden shadow-lg border-2 border-white">
+                    <div className="absolute top-4 right-4 w-[18%] aspect-video rounded-xl overflow-hidden shadow-lg border-2 border-white">
                       <video
                         ref={localVideoRef}
                         autoPlay
@@ -275,18 +277,18 @@ export default function InteractiveAvatar() {
                     </div>
                   )}
 
-                  <div className="absolute bottom-[5%] right-[5%] flex flex-col gap-3">
+                  <div className="absolute bottom-4 right-4 flex flex-col gap-2">
                     <Button
-                      className="bg-gradient-to-r from-red-500 to-rose-400 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-8"
-                      size="md"
+                      className="bg-gradient-to-r from-red-500 to-rose-400 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-6"
+                      size="sm"
                       onClick={handleInterrupt}
                       startContent={<X className="w-4 h-4" />}
                     >
                       Stop Response
                     </Button>
                     <Button
-                      className="bg-gradient-to-r from-slate-700 to-slate-600 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-8"
-                      size="md"
+                      className="bg-gradient-to-r from-slate-700 to-slate-600 hover:opacity-90 text-white shadow-lg transition-all duration-200 rounded-full px-6"
+                      size="sm"
                       onClick={endSession}
                       startContent={<LogOut className="w-4 h-4" />}
                     >
@@ -297,44 +299,27 @@ export default function InteractiveAvatar() {
               </div>
             </div>
           </CardBody>
+          
           <Divider className="bg-gray-100" />
-          <CardFooter className="flex flex-col gap-4 relative bg-white/80 backdrop-blur-sm p-6">
-            {chatMode === "text_mode" ? (
-              <div className="w-full flex relative">
-                <InteractiveAvatarTextInput
-                  disabled={!stream}
-                  input={text}
-                  label="Chat"
-                  loading={isLoadingRepeat}
-                  placeholder="Type something for the avatar to respond"
-                  setInput={setText}
-                  onSubmit={handleSpeak}
-                />
-                {text && (
-                  <Chip className="absolute right-16 top-3">Listening</Chip>
-                )}
-              </div>
-            ) : (
-              <div className="w-full flex justify-center">
-                <div
-                  className={`
-                    px-8 py-4 rounded-full transition-all duration-200 flex items-center gap-3
-                    ${isUserTalking 
-                      ? 'bg-gradient-to-r from-green-500/10 to-emerald-400/10 text-green-600'
-                      : 'bg-gradient-to-r from-blue-600/10 to-indigo-500/10 text-blue-600'
-                    }
-                  `}
-                >
-                  {isUserTalking 
-                    ? <CircleDot className="w-5 h-5 animate-pulse" />
-                    : <Mic className="w-5 h-5" />
-                  }
-                  <span className="font-medium">
-                    {isUserTalking ? "Listening to your voice..." : "Waiting for your voice..."}
-                  </span>
-                </div>
-              </div>
-            )}
+          
+          <CardFooter className="flex justify-center bg-white/80 backdrop-blur-sm p-4">
+            <div
+              className={`
+                px-6 py-3 rounded-full transition-all duration-200 flex items-center gap-3
+                ${isUserTalking 
+                  ? 'bg-gradient-to-r from-green-500/10 to-emerald-400/10 text-green-600'
+                  : 'bg-gradient-to-r from-blue-600/10 to-indigo-500/10 text-blue-600'
+                }
+              `}
+            >
+              {isUserTalking 
+                ? <CircleDot className="w-4 h-4 animate-pulse" />
+                : <Mic className="w-4 h-4" />
+              }
+              <span className="font-medium text-sm">
+                {isUserTalking ? "Listening to your voice..." : "Waiting for your voice..."}
+              </span>
+            </div>
           </CardFooter>
         </Card>
       )}
