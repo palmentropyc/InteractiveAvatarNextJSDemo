@@ -87,18 +87,20 @@ export default function InteractiveAvatar() {
     try {
       const avatarId = process.env.NEXT_PUBLIC_AVATAR_ID;
       const knowledgeId = process.env.NEXT_PUBLIC_KNOWLEDGE_BASE_ID;
+      const voiceId = process.env.NEXT_PUBLIC_VOICE_ID;
 
-      if (!avatarId || !knowledgeId) {
-        console.error("Environment variables:", { avatarId, knowledgeId });
+      if (!avatarId || !knowledgeId || !voiceId) {
+        console.error("Environment variables:", { avatarId, knowledgeId, voiceId });
         throw new Error("Missing environment variables");
       }
 
       const res = await avatar.current.createStartAvatar({
-        quality: AvatarQuality.Low,
+        quality: AvatarQuality.High,
         avatarName: avatarId,
         knowledgeId: knowledgeId,
         voice: {
-          rate: 1.5,
+          rate: 1,
+          voiceId: voiceId,
           emotion: VoiceEmotion.EXCITED,
         },
         language: 'es',
